@@ -1,0 +1,37 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+<div class="row g-4">
+    <!-- კატეგორიები -->
+    <div class="col-md-3">
+        <h5 class="fw-bold mb-3">კატეგორიები</h5>
+        <div class="list-group list-group-flush border-bottom">
+            {% for category in categories %}
+                <a href="{% url 'category_products' category.id %}" class="list-group-item list-group-item-action py-2">
+                    {{ category.name }}
+                </a>
+            {% empty %}
+                <p class="text-muted">კატეგორიები არ არის.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- პროდუქტები -->
+    <div class="col-md-9">
+        <h5 class="fw-bold mb-3">ყველა პროდუქტი</h5>
+        <div class="list-group list-group-flush border-bottom">
+            {% for product in products %}
+                <a href="{% url 'product_detail' product.id %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-3">
+                    <div>
+                        <div class="fw-bold text-dark">{{ product.name }}</div>
+                        <small class="text-muted">{{ product.description|truncatechars:60 }}</small>
+                    </div>
+                    <span class="badge bg-light text-dark border fs-6">{{ product.price }} ₾</span>
+                </a>
+            {% empty %}
+                <p class="text-muted">პროდუქტები არ არის.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
