@@ -1,0 +1,18 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 text-center">
+        <div class="card shadow-sm p-5">
+            <h3 class="mb-3 text-danger">ნამდვილად გსურთ წაშლა?</h3>
+            <p class="fs-5 mb-4">პროდუქტი: <strong>"{{ product.name }}"</strong> სამუდამოდ წაიშლება.</p>
+            
+            <form method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger px-4 me-2">დიახ, წაშლა</button>
+                <a href="{% url 'home' %}" class="btn btn-secondary px-4">გაუქმება</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

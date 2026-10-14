@@ -1,5 +1,6 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Category, Product
+from .forms import ProductForm  
 
 def home_view(request):
     categories = Category.objects.all()
@@ -36,3 +37,32 @@ def product_detail_view(request, pk):
         'product': product,
     }
     return render(request, 'store/product_detail.html', context)
+
+
+def add_product(request):
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('home')  
+    else:
+        form = ProductForm()
+    return render(request, 'store/product_form.html', {'form': form, 'title': 'პროდუქტის დამატება'})
+
+def update_product(request, pk):
+    product = get_object_or_404(Product, id=pk)
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES, instance=product)
+        if form.is_valid():
+            form.save()
+            return redirect('product_detail', pk=product.pk)
+    else:
+        form = ProductForm(instance=product)
+    return render(request, 'store/product_form.html', {'form': form, 'title': 'პროდუქტის რედაქტირება'})
+
+def delete_product(request, pk):
+    product = get_object_or_404(Product, id=pk)
+    if request.method == 'POST':
+        product.delete()
+        return redirect('home')
+    return render(request, 'store/product_confirm_delete.html', {'product': product})
